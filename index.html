@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  </head>
+  <body>
+  
+    <nav class="navbar navbar-expand-lg navbar-dark bg-custom mb-5">
+      <a class="navbar-brand text-white" href="#">LOGO</a>  
+
+      <div class="collapse navbar-collapse">
+        <ul id="nav_menu" class="navbar-nav ml-auto">
+          <li class="nav-item" onclick="tree_view()">
+            <a class="nav-link text-white" href="#">Contactos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="#">Compañias</a>
+          </li>
+          <li id="nav_usuarios" class="nav-item" onclick="display_usuarios()">
+            <a class="nav-link text-white" href="#">Usuarios</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="#">Región / Ciudad</a>
+          </li>
+        </ul>
+      </div>            
+    </nav>
+
+    <section id="login_section" class="container-fluid d-none">
+      <section class="row justify-content-center">
+        <section class="col-12 col-sm-6 col-md-3">
+          <form class="form-container" id="myForm">
+            <div class="form-group">
+              <label for="usuario">Usuario:</label>
+              <input type="text" class="form-control" id="usuario" aria-describedby="emailHelp" name="email" placeholder="Usuario">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Contraseña:</label>
+              <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña">
+            </div>
+            <p id="warning" class="text-danger d-none">Usuario o clave incorrectos.</p>
+            <button onclick="login()" type="button" class="btn btn-primary" id="ingreso">Ingresar</button>
+          </form>
+        </section>
+      </section>
+    </section>
+    
+    <section id="bienvenidos" class="row align-items-center justify-content-center vh-100 d-none">
+        <div>
+          Bienvenido
+        </div>
+    </section>
+
+    <section id="usuarios" class="container-fluid d-none">
+      <div class="mb-4 d-flex justify-content-between">
+        <h2>Usuarios</h2>
+        <button id="edit_boton" type="button" class="btn btn-primary d-none" data-toggle="modal" data-target="#exampleModalCenter2">
+          Editar/Borrar usuario.
+        </button>
+        <button  type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+          Nuevo usuario
+        </button>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Editar usuario</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form>
+                  <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Nombre:</label>
+                    <input type="text" class="form-control" id="user_nombre_edit">
+                  </div>
+                  <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Apellido:</label>
+                    <input type="text" class="form-control" id="user_apellido_edit">
+                  </div>
+                  <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Email:</label>
+                    <input type="text" class="form-control" id="user_email_edit">
+                  </div>
+                  <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Administrador:</label>
+                    <input type="text" class="form-control" id="user_admin_edit">
+                  </div>
+                  <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Contraseña:</label>
+                    <input type="text" class="form-control" id="user_password_edit">
+                  </div>
+                  <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Repetir contraseña:</label>
+                    <input type="text" class="form-control" id="user_paswordx2_edit">
+                    <p id="warning_password2" class="text-danger d-none">Contraseñas no coinciden.</p>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="delete_usuario()">Eliminar usuario</button>
+                <button type="button" class="btn btn-primary" onclick="update_usuario()">Guardar cambios</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Nuevo usuario</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form>
+                  <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Nombre:</label>
+                    <input type="text" class="form-control" id="user_nombre">
+                  </div>
+                  <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Apellido:</label>
+                    <input type="text" class="form-control" id="user_apellido">
+                  </div>
+                  <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Email:</label>
+                    <input type="text" class="form-control" id="user_email">
+                  </div>
+                  <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Administrador:</label>
+                    <input type="text" class="form-control" id="user_admin">
+                  </div>
+                  <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Contraseña:</label>
+                    <input type="text" class="form-control" id="user_password">
+                  </div>
+                  <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Repetir contraseña:</label>
+                    <input type="text" class="form-control" id="user_paswordx2">
+                    <p id="warning_password" class="text-danger d-none">Contraseñas no coinciden.</p>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="post_usuario()">Guardar usuario</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Apellido</th>
+            <th scope="col">Email</th>
+            <th scope="col">Administrador</th>
+          </tr>
+        </thead>
+        <tbody id="tabla_usuarios">
+        </tbody>
+      </table>
+    </section>
+
+    <section id="region_ciudad" class="container-fluid">
+      <div class="mb-4 d-flex flex-row-reverse">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_post_region">
+          Agregar región
+        </button>
+        <div class="modal fade" id="modal_post_region" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Nueva region</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form>
+                  <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Region:</label>
+                    <input type="text" class="form-control" id="region_nombre">
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="post_region()">Guardar region</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ul id="myUL">
+        <li><span class="caret">Beverages</span>
+          <ul class="nested">
+            <li>Water</li>
+            <li>Coffee</li>
+            <li><span class="caret">Tea</span>
+              <ul class="nested">
+                <li>Black Tea</li>
+                <li>White Tea</li>
+                <li><span class="caret">Green Tea</span>
+                  <ul class="nested">
+                    <li>Sencha</li>
+                    <li>Gyokuro</li>
+                    <li>Matcha</li>
+                    <li>Pi Lo Chun</li>
+                  </ul>
+                </li>
+              </ul>
+            </li>  
+          </ul>
+        </li>
+      </ul>
+      <div class="modal fade" id="modal_post_ciudad" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Nueva ciudad:</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-group">
+                  <label for="recipient-name" class="col-form-label">Ciudad:</label>
+                  <input type="text" class="form-control" id="pais_nombre">
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+              <button type="button" class="btn btn-primary" onclick="post_ciudad()">Guardar ciudad</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="modal_post_pais" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Nuevo Pais</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-group">
+                  <label for="recipient-name" class="col-form-label">Pais:</label>
+                  <input type="text" class="form-control" id="pais_nombre">
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+              <button type="button" class="btn btn-primary" onclick="post_pais()">Guardar pais</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+          
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="main.js"></script>
+    <script type="text/javascript" src="ubicaciones.js"></script>
+    
+  </body>
+</html>
