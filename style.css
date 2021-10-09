@@ -53,3 +53,22 @@ ul, #myUL {
   .active {
     display: block;
   }
+
+.position_button{
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.position_list{
+  position: relative;
+}
+
+.margin_left{
+  position: absolute;
+  left: 180px;
+}
+
+.margin_left_update{
+  position: absolute;
+  left: 252px;
+}

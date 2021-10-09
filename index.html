@@ -44,7 +44,7 @@
             </div>
             <div class="form-group">
               <label for="exampleInputPassword1">Contraseña:</label>
-              <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña">
+              <input type="password" class="form-control" id="password" name="password" autocomplete="on" placeholder="Contraseña">
             </div>
             <p id="warning" class="text-danger d-none">Usuario o clave incorrectos.</p>
             <button onclick="login()" type="button" class="btn btn-primary" id="ingreso">Ingresar</button>
@@ -205,29 +205,33 @@
             </div>
           </div>
         </div>
+        <div class="modal fade" id="modal_put_region" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Editar region</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form>
+                  <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Region:</label>
+                    <input type="text" class="form-control" id="region_put_nombre">
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="update_region()">Guardar region</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <ul id="myUL">
-        <li><span class="caret">Beverages</span>
-          <ul class="nested">
-            <li>Water</li>
-            <li>Coffee</li>
-            <li><span class="caret">Tea</span>
-              <ul class="nested">
-                <li>Black Tea</li>
-                <li>White Tea</li>
-                <li><span class="caret">Green Tea</span>
-                  <ul class="nested">
-                    <li>Sencha</li>
-                    <li>Gyokuro</li>
-                    <li>Matcha</li>
-                    <li>Pi Lo Chun</li>
-                  </ul>
-                </li>
-              </ul>
-            </li>  
-          </ul>
-        </li>
       </ul>
       <div class="modal fade" id="modal_post_ciudad" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -242,7 +246,7 @@
               <form>
                 <div class="form-group">
                   <label for="recipient-name" class="col-form-label">Ciudad:</label>
-                  <input type="text" class="form-control" id="pais_nombre">
+                  <input type="text" class="form-control" id="ciudad_nombre">
                 </div>
               </form>
             </div>
@@ -277,6 +281,55 @@
           </div>
         </div>
       </div>
+      <div class="modal fade" id="modal_put_pais" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Editar pais</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-group">
+                  <label for="recipient-name" class="col-form-label">Pais:</label>
+                  <input type="text" class="form-control" id="pais_put_nombre">
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+              <button type="button" class="btn btn-primary" onclick="update_pais()">Guardar pais</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="modal_put_ciudad" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Editar ciudad</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-group">
+                  <label for="recipient-name" class="col-form-label">Ciudad:</label>
+                  <input type="text" class="form-control" id="ciudad_put_nombre">
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+              <button type="button" class="btn btn-primary" onclick="update_ciudad()">Guardar Ciudad</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </section>
           
     <!-- Optional JavaScript -->

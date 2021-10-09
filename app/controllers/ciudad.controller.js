@@ -50,7 +50,8 @@ exports.ciudadById = (req, res) => {
         id_pais: req.body.id_pais,
         nombre: req.body.nombre
     });
-  
+    console.log("holssw")
+
     Ciudad.updateById(
       req.params.ciudadId,
       ciudad,
