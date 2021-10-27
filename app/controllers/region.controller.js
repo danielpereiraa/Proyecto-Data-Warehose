@@ -8,7 +8,7 @@ exports.findAll = (req, res) => {
     if (err)
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving customers."
+          err.message || "Some error occurred while retrieving companys."
       });
     else {
       console.log(data)

@@ -1,3 +1,40 @@
+var display_regiones = () =>{
+
+  var section = document.getElementById('region_ciudad').classList.contains("d-none");
+  console.log(section);
+  if(!section){
+    return
+  }
+  /*
+  adelante.removeEventListener("click", buscar_todos_contactos);
+  atras.removeEventListener("click", pagina_anterior_contactos);
+  adelante.addEventListener("click", buscar_todos);
+  atras.addEventListener("click", pagina_anterior);
+*/
+
+  var seccion_contactos = document.getElementById('contactos').classList.contains("d-none");
+  if(!seccion_contactos){
+    document.getElementById('contactos').classList.toggle("d-none");
+  }
+  var seccion_usuarios = document.getElementById('usuarios').classList.contains("d-none");
+  if(!seccion_usuarios){
+    document.getElementById('usuarios').classList.toggle("d-none");
+  }
+  var seccion_compañias = document.getElementById('compañias').classList.contains("d-none");
+  if(!seccion_compañias){
+    document.getElementById('compañias').classList.toggle("d-none");
+  }
+  document.getElementById('region_ciudad').classList.toggle("d-none");
+  var footer = document.getElementsByTagName('footer')[0].classList.contains("d-none");
+  console.log(footer);
+  if(!footer){
+    document.getElementsByTagName('footer')[0].classList.toggle("d-none");  }
+}
+
+var boton_region = document.getElementById('boton_region');
+boton_region.addEventListener("click", display_regiones)
+
+
 var tree_view = () =>{
 
     var toggler = document.getElementsByClassName("caret");
@@ -43,7 +80,6 @@ var obtenerRegion = async(i) =>{
       deleteButton.addEventListener("click", delete_region);
       deleteButton.id = json[i].id;
       updateButton.className = "btn btn-warning margin_left_update";
-     // deleteButton.addEventListener("click", delete_region);
       updateButton.id = json[i].id;
 
       myButton.setAttribute("data-target", "#modal_post_pais");
@@ -80,7 +116,7 @@ var obtenerRegion = async(i) =>{
       myButton.appendChild(text_myButton);
       myUL.appendChild(li);
 
-
+ 
 
 
       obtenerPaises(json[i].id);

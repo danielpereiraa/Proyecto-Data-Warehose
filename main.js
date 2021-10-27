@@ -1,3 +1,33 @@
+var display_usuarios =() =>{
+ // var bienvenidos = document.getElementById("bienvenidos");
+  var usuarios = document.getElementById("usuarios").classList.contains("d-none");
+  if(!usuarios){
+    return
+  }
+  var seccion_contactos = document.getElementById('contactos').classList.contains("d-none");
+  if(!seccion_contactos){
+    document.getElementById('contactos').classList.toggle("d-none");
+  }
+  var seccion_compañias = document.getElementById('compañias').classList.contains("d-none");
+  if(!seccion_compañias){
+    document.getElementById('compañias').classList.toggle("d-none");
+  }
+  var seccion_regiones = document.getElementById('region_ciudad').classList.contains("d-none");
+  if(!seccion_regiones){
+    document.getElementById('region_ciudad').classList.toggle("d-none");
+  }
+ // bienvenidos.classList.toggle("d-none");
+  document.getElementById("usuarios").classList.toggle("d-none");
+  console.log("hola");
+  //buscar_todos();
+
+
+}
+
+var boton_usuarios = document.getElementById('usuarios');
+boton_usuarios.addEventListener("click", display_usuarios)
+
+//LOGIN
 var login = async () =>{
 
   let email = document.getElementById("usuario").value;
@@ -57,14 +87,9 @@ var login = async () =>{
 
 }
 
-var display_usuarios =() =>{
-  var bienvenidos = document.getElementById("bienvenidos")
-  var usuarios = document.getElementById("usuarios")
-  bienvenidos.classList.toggle("d-none")
-  usuarios.classList.toggle("d-none")
-  console.log("hola")
 
-}
+//GET
+
 
 var obtenerUsuarios = async (i) => {
 
@@ -149,7 +174,7 @@ var check_target = '';
 }
 
 var inicio = 0;
-var final = 10  ;
+var final = 10 ;
 
 var buscar_todos = () =>{
 
@@ -159,7 +184,9 @@ var buscar_todos = () =>{
   inicio += 10;
   final +=10;
 }
-//buscar_todos()
+buscar_todos()
+
+//POST
 
 var post_usuario = async() =>{
   console.log("prueba");
@@ -202,6 +229,8 @@ var post_usuario = async() =>{
     msg.classList.toggle("d-none")
   }
 }
+
+//PUT
 
 var update_usuario = async () => {
  
@@ -246,6 +275,8 @@ var update_usuario = async () => {
     msg.classList.toggle("d-none")
   }
 }
+
+//DELETE
 
 var delete_usuario = async() =>{
 

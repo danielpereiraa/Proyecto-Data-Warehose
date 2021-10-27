@@ -3,6 +3,10 @@ module.exports = app => {
   const usuarios = require("../controllers/usuario_controller.js");
   const pais = require("../controllers/pais.controller.js");
   const ciudad = require("../controllers/ciudad.controller.js");
+  const compañias = require("../controllers/compañia.controller.js");
+  const contactos = require("../controllers/contacto.controller.js");
+
+  
 
 //CRUD Regiones
   app.post("/v1/regiones"/*, usuarios.verificarToken*/, regiones.create);
@@ -34,16 +38,27 @@ app.delete("/v1/usuarios/:usuarioId", /*usuarios.verificarToken,*/ usuarios.dele
 
 
 app.post("/v1/login", usuarios.login)
- /* app.get("/v1/usuarios/:usuarioId", usuarios.verificarId, usuarios.userById);
+ /* app.get("/v1/usuarios/:usuarioId", usuarios.verificarId, usuarios.userById)*/
 
-//CRUD Pedidos
-  app.get("/v1/pedidos", pedidos.findAll)
-  app.get("/v1/pedidos/:pedidoId", usuarios.verificarId, pedidos.findById)
-  app.post("/v1/pedidos", pedidos.createPedido);
-  app.put("/v1/pedidos/:pedidoId", usuarios.verificarToken, pedidos.update);
-  app.delete("/v1/pedidos/:pedidoId", usuarios.verificarToken, pedidos.delete);
+ 
 
-*/
+//CRUD compañias 
+app.post("/v1/companies", compañias.create);
+app.get("/v1/companies", compañias.findAll);
+app.put("/v1/companies/:companyId", compañias.update);
+app.delete("/v1/companies/:companyId", /*usuarios.v  erificarToken,*/ compañias.delete);
+
+//CRUD contacto 
+app.post("/v1/contactos", contactos.create);
+app.get("/v1/contactos", contactos.findAll);
+app.get("/v1/contactos/:input", contactos.findByInput);
+app.put("/v1/contactos/:contactoId", contactos.update);
+app.delete("/v1/contactos/:contactoId", /*usuarios.v  erificarToken,*/ contactos.delete);
+
+
+
+
+
 //midleaware global
   app.use((err, req, res, next) => {
     if(err){
