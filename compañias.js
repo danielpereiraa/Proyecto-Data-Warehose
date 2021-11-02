@@ -8,9 +8,14 @@ var display_compañias = () =>{
   
   adelante.removeEventListener("click", buscar_todos_contactos);
   atras.removeEventListener("click", pagina_anterior_contactos);
+  adelante.removeEventListener("click", buscar_todos_usuarios);
+  atras.removeEventListener("click", pagina_anterior_usuarios);
   adelante.addEventListener("click", buscar_todos);
   atras.addEventListener("click", pagina_anterior);
-
+  var seccion_welcome = document.getElementById('bienvenidos').classList.contains("d-none");
+  if(!seccion_welcome){
+    document.getElementById('bienvenidos').classList.toggle("d-none");
+  }
   var seccion_contactos = document.getElementById('contactos').classList.contains("d-none");
   if(!seccion_contactos){
     document.getElementById('contactos').classList.toggle("d-none");
@@ -23,7 +28,7 @@ var display_compañias = () =>{
   if(!seccion_regiones){
     document.getElementById('region_ciudad').classList.toggle("d-none");
   }
-  primera_pagina();
+  buscar_todos();
   document.getElementById('compañias').classList.toggle("d-none");
   var footer = document.getElementsByTagName('footer')[0].classList.contains("d-none");
   console.log(footer);
@@ -51,7 +56,6 @@ var obtenerCompañias = async (i) => {
   
       var hilera = document.createElement("tr");
   
-      var box = document.createElement("td");
       var nombre = document.createElement("td");
       var direccion = document.createElement("td");
       var email = document.createElement("td");
@@ -59,12 +63,7 @@ var obtenerCompañias = async (i) => {
       var ciudad = document.createElement("td");
       var acciones = document.createElement("td");
   
-      var x = document.createElement("INPUT");
-      x.setAttribute("type", "checkbox");
-      x.id = "check" + i;
-     // console.log(x.id)
-     // console.log(json[i].id)
-      x.addEventListener('change', selectOnlyThis)
+
 
       var text_nombre = document.createTextNode(json[i].nombre_company);
       var text_direccion = document.createTextNode(json[i].direccion);
@@ -77,8 +76,10 @@ var obtenerCompañias = async (i) => {
       var text_updateButton = document.createTextNode("Editar");
 
       deleteButton.className = "btn btn-danger";
-      deleteButton.addEventListener("click", delete_compañia);
+      deleteButton.addEventListener("click", company_delete_ID);
       deleteButton.id = "delete_company" + json[i].id;
+      deleteButton.setAttribute("data-target", "#modal_delete_company");
+      deleteButton.setAttribute("data-toggle", "modal");
       updateButton.className = "btn btn-warning";
       updateButton.id = "edit_company" + json[i].id;
       updateButton.setAttribute("data-target", "#modal_put_company");
@@ -87,7 +88,6 @@ var obtenerCompañias = async (i) => {
 
       deleteButton.appendChild(text_deleteButton);
       updateButton.appendChild(text_updateButton);
-      box.appendChild(x);
       nombre.appendChild(text_nombre);
       direccion.appendChild(text_direccion);
       email.appendChild(text_email);
@@ -96,7 +96,6 @@ var obtenerCompañias = async (i) => {
       acciones.appendChild(deleteButton);
       acciones.appendChild(updateButton);
       
-      hilera.appendChild(box);
       hilera.appendChild(nombre);
       hilera.appendChild(direccion);
       hilera.appendChild(email);
@@ -112,20 +111,8 @@ var obtenerCompañias = async (i) => {
       console.log(e);
       console.log(e.message);
     })
-  
-  
-  
     }
 
-var selectOnlyThis =(id) => {
-  console.log(id.target.id)
-  console.log(cuenta);
-  for (var i = 0;i < cuenta; i++){
-    document.getElementById("check" + i).checked = false;
-  }
-
-  document.getElementById(id.target.id).checked = true;
-}
   
   var inicio = 1;
   var final = 10;
@@ -140,15 +127,25 @@ var selectOnlyThis =(id) => {
 
       var get_companies = await obtenerCompañias(0)
 
-      for(var i = inicio; i < final; i++){
-        obtenerCompañias(i)
-      }
+      if(cuenta < final){
+        console.log('PRue')
+        for(var i = inicio; i < cuenta; i++){
+          obtenerCompañias(i)
+        }
+        document.getElementById("filas").innerHTML = "";  
+        document.getElementById('filas').innerHTML = "1-" + cuenta +" de " + cuenta + " filas";
+      }else{
+        for(var i = inicio; i < final; i++){
+          obtenerCompañias(i)
+        }
+    
+        console.log(inicio);
+        console.log(final);
   
-      console.log(inicio);
-      console.log(final);
-
-      document.getElementById('filas').innerHTML = "1-10 de " + cuenta + " filas";
-    } 
+        document.getElementById('filas').innerHTML = "1-10 de " + cuenta + " filas";
+      
+      }
+      } 
     var pagina_intermedia = () =>{
       console.log(inicio);
       console.log(final);
@@ -183,11 +180,20 @@ var selectOnlyThis =(id) => {
 
     var buscar_todos = async() =>{
     console.log(final > (cuenta + 10))
+
     if(inicio == 1){
   
     var myFuncionc = await primera_pagina();
-    inicio = final;
-    final +=10;
+
+    if(cuenta <= 10){
+      return
+    }else if(cuenta <= 20){
+      inicio = final;
+      final = cuenta
+    }else if(cuenta > 20){
+      inicio = final;
+      final = final + 10;
+    }
 
     }else if(final < cuenta){
 
@@ -203,12 +209,10 @@ var selectOnlyThis =(id) => {
     }else{
 
       ultima_pagina();
-      console.log(inicio);
-      console.log(final);
     }
   }
   
-  buscar_todos();
+  //buscar_todos();
   var adelante = document.getElementById("adelante");
 
   var pagina_anterior = () =>{
@@ -216,7 +220,11 @@ var selectOnlyThis =(id) => {
     console.log(cuenta);
 
     console.log(final == cuenta);
-    if(inicio == 10 ){
+    if(inicio == 1){
+      console.log("NEW")
+  
+      return
+    }else if(inicio == 10 ){
       primera_pagina(); 
       return
     }else if(final == cuenta){ 
@@ -370,9 +378,15 @@ var put_compañia = async () => {
 }
 
 //DELETE
+
+var id_delete_company = "";
+var company_delete_ID = (event) =>{
+    var boton = event.target.id;
+    id_delete_company = boton;
+}
 var delete_compañia = async(event) =>{
-  console.log(event.target.id)
-  var boton = event.target.id
+  console.log(id_delete_company)
+  var boton = id_delete_company;
   var patt1 = /[0-9]/g;
   var digits = boton.match(patt1);
   var id_delelte_compañia = ""

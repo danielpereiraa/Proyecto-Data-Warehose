@@ -11,7 +11,10 @@ var display_regiones = () =>{
   adelante.addEventListener("click", buscar_todos);
   atras.addEventListener("click", pagina_anterior);
 */
-
+var seccion_welcome = document.getElementById('bienvenidos').classList.contains("d-none");
+if(!seccion_welcome){
+  document.getElementById('bienvenidos').classList.toggle("d-none");
+}
   var seccion_contactos = document.getElementById('contactos').classList.contains("d-none");
   if(!seccion_contactos){
     document.getElementById('contactos').classList.toggle("d-none");
@@ -25,8 +28,10 @@ var display_regiones = () =>{
     document.getElementById('compañias').classList.toggle("d-none");
   }
   document.getElementById('region_ciudad').classList.toggle("d-none");
+  call_me();
   var footer = document.getElementsByTagName('footer')[0].classList.contains("d-none");
   console.log(footer);
+
   if(!footer){
     document.getElementsByTagName('footer')[0].classList.toggle("d-none");  }
 }
@@ -76,6 +81,7 @@ var obtenerRegion = async(i) =>{
       var text_updateButton = document.createTextNode("Editar");
 
       myButton.className = "btn btn-primary position_button";
+      myButton.style.position = "absolute";
       deleteButton.className = "btn btn-danger margin_left";
       deleteButton.addEventListener("click", delete_region);
       deleteButton.id = json[i].id;
@@ -136,7 +142,7 @@ var call_me = async () =>{
   let val2 = await obtenerPaises();
   let val4 = tree_view();
 }
-call_me()
+//call_me()
 
 
 var obtenerPaises = async (id) =>{
@@ -151,7 +157,6 @@ var obtenerPaises = async (id) =>{
   const response = await fetch(`http://127.0.0.1:3000/v1/paises/${regionId}`)
   .then(response => response.json())
   .then(json => {
-
 
 
     for (var i = 0;i < json.length; i++){
@@ -170,8 +175,9 @@ var obtenerPaises = async (id) =>{
       var text_updateButton = document.createTextNode("Editar");
 
       myButton.className = "btn btn-primary position_button";
-      myButton.setAttribute("data-target", "#modal_post_ciudad  ");
+      myButton.style.position = "absolute";
       myButton.setAttribute("data-toggle", "modal");
+      myButton.setAttribute("data-target", "#modal_post_ciudad");
       myButton.id = json[i].id;
       myButton.addEventListener("click", eventoBoton);
       deleteButton.addEventListener("click", delete_pais);
@@ -199,7 +205,7 @@ var obtenerPaises = async (id) =>{
 
      
       myButton.appendChild(text_myButton);
-      pais.appendChild(myButton);
+      //pais.appendChild(myButton);
       span.appendChild(text_pais);
       div.appendChild(span);
       pais.appendChild(div);
@@ -207,6 +213,7 @@ var obtenerPaises = async (id) =>{
       div.appendChild(deleteButton);
       updateButton.appendChild(text_updateButton);
       div.appendChild(updateButton);
+      div.appendChild(myButton);
       pais.appendChild(ul_ciudades);
       
       if(ul !== null){
@@ -214,6 +221,7 @@ var obtenerPaises = async (id) =>{
 
       }
 
+      console.log(json[i].id)
 
       obtenerCiudades(json[i].id);
       
@@ -246,6 +254,7 @@ var eventoBoton = (event) => {
 }
 
 var obtenerCiudades = async (id) =>{
+ console.log(id);
 
   var paisId = id;
   var ul = document.getElementById('pais' + paisId);
@@ -254,19 +263,22 @@ var obtenerCiudades = async (id) =>{
   const response = await fetch(`http://127.0.0.1:3000/v1/ciudades/${paisId}`)
   .then(response => response.json())
   .then(json => {
+    console.log(json);
 
+    console.log("pasando");
     for (var i = 0;i < json.length; i++){
 
       var ciudad = document.createElement("LI");
       var div = document.createElement("DIV");
 
       var span =  document.createElement("SPAN");
-      var text_ciudad = document.createTextNode(json[i].nombre);
+      var text_ciudad = document.createTextNode(json[i].nombre_ciudad);
       var deleteButton = document.createElement("BUTTON");
       var text_deleteButton = document.createTextNode("Borrar");
       var updateButton = document.createElement("BUTTON");
       var text_updateButton = document.createTextNode("Editar");
 
+      console.log(text_ciudad);
       updateButton.className = "btn btn-warning margin_left_update";      
       updateButton.setAttribute("data-target", "#modal_put_ciudad");
       updateButton.setAttribute("data-toggle", "modal");
@@ -362,18 +374,18 @@ var post_pais = async() =>{
     console.log(data);
 
   $('#modal_post_pais').modal('hide');
-  location.reload();
+ // location.reload();
 
 }
 
 var post_ciudad = async() =>{
   console.log(id_pais_button);
 
-  let nombre = document.getElementById("ciudad_nombre").value;
+  let nombre_ciudad = document.getElementById("ciudad_nombre").value;
   let id_pais = id_pais_button;
 
 
-  let data = {nombre, id_pais}
+  let data = {id_pais, nombre_ciudad }
 
     console.log(data);
   
@@ -550,9 +562,12 @@ var obtener_paisID = (event) => {
 
   var evento = event.target;
   
-  var parent = evento.parentElement;  
-  var paisID = parent.parentElement.id;
+  var parent = evento.parentElement; 
+  var li = parent.parentElement; 
+  var paisID = li.parentElement.id;
+  console.log(li);
 
+  console.log(paisID);
   var patt1 = /[0-9]/g;
   var digits = paisID.match(patt1);
   
@@ -569,7 +584,7 @@ var obtener_paisID = (event) => {
   }
 
 
-  console.log(parent);
+
   console.log(put_pais_id);
 
 }
@@ -598,17 +613,18 @@ var obtener_ciudadID = (event) => {
       put_ciudad_id =  put_ciudad_id + digits[i]
     }
   }
+  console.log(put_ciudad_id);
 }
 
 var update_ciudad = async () => {
  
-  let nombre = document.getElementById("ciudad_put_nombre").value;
+  let nombre_ciudad = document.getElementById("ciudad_put_nombre").value;
 
 
   let id = put_ciudad_id;
   let id_pais = put_pais_id;
   
-  let data = {id_pais, nombre};
+  let data = {id_pais, nombre_ciudad};
   console.log(id);
   console.log(data);
   

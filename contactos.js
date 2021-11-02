@@ -5,16 +5,21 @@ var cuenta_contactos;
 var display_contactos = () =>{
 
   var section = document.getElementById('contactos').classList.contains("d-none");
-  console.log(section);
   if(!section){
     return
   }
   
+  adelante.removeEventListener("click", buscar_todos_usuarios);
+  atras.removeEventListener("click", pagina_anterior_usuarios);
   adelante.removeEventListener("click", buscar_todos);
   atras.removeEventListener("click", pagina_anterior);
   adelante.addEventListener("click", buscar_todos_contactos);
   atras.addEventListener("click", pagina_anterior_contactos);
 
+  var seccion_welcome = document.getElementById('bienvenidos').classList.contains("d-none");
+  if(!seccion_welcome){
+    document.getElementById('bienvenidos').classList.toggle("d-none");
+  } 
   var seccion_compañias = document.getElementById('compañias').classList.contains("d-none");
   if(!seccion_compañias){
     document.getElementById('compañias').classList.toggle("d-none");
@@ -28,14 +33,10 @@ var display_contactos = () =>{
     document.getElementById('region_ciudad').classList.toggle("d-none");
   }
   document.getElementById('contactos').classList.toggle("d-none");
-  primera_pagina_contactos();
-
-
-  console.log(section);
-
+  //primera_pagina_contactos();
+  buscar_todos_contactos();
 
   var footer = document.getElementsByTagName('footer')[0].classList.contains("d-none");
-  console.log(footer);
   if(footer){
     document.getElementsByTagName('footer')[0].classList.toggle("d-none");  
   }
@@ -57,7 +58,6 @@ boton_contactos.addEventListener("click", display_contactos)
     var count = Object.keys(json).length;
     cuenta_contactos = count;
   
-
     creacion_hileras(json, i);
   
     })
@@ -69,6 +69,8 @@ boton_contactos.addEventListener("click", display_contactos)
 
 var creacion_hileras = (json, i) => {
   
+  console.log(json.length)
+
   var tabla = document.getElementById('tabla_contactos');
   var hilera = document.createElement("tr");
 
@@ -140,6 +142,7 @@ acciones.appendChild(updateButton);
 
 
 var primera_pagina_contactos = async() =>{
+  
   var inicio = 1;
   var final = 10;
   console.log(inicio);
@@ -148,15 +151,30 @@ var primera_pagina_contactos = async() =>{
 
   var get_contactos = await obtenerContactos(0)
 
-  for(var i = inicio; i < final; i++){
-    obtenerContactos(i)
+  console.log(cuenta_contactos);
+
+
+  if(cuenta_contactos < final){
+    console.log('PRue')
+    for(var i = inicio; i < cuenta_contactos; i++){
+      obtenerContactos(i)
+    }
+    document.getElementById("filas").innerHTML = "";  
+    document.getElementById('filas').innerHTML = "1-" + cuenta_contactos +" de " + cuenta_contactos + " filas";
+  }else{
+    
+    for(var i = inicio; i < final; i++){
+      obtenerContactos(i)
+    }
+    document.getElementById("filas").innerHTML = "";  
+    document.getElementById('filas').innerHTML = "1-10 de " + cuenta_contactos + " filas";
   }
+
 
   console.log(inicio);
   console.log(final);
 
-  document.getElementById("filas").innerHTML = "";
-  document.getElementById('filas').innerHTML = "1-10 de " + cuenta_contactos + " filas";
+
 } 
 var pagina_intermedia_contactos = () =>{
   console.log(inicio);
@@ -194,6 +212,18 @@ var buscar_todos_contactos = async() =>{
 
   if(inicio == 1){
     var myFuncionc = await primera_pagina_contactos();
+    
+    if(cuenta_contactos <= 10){
+      return
+    }else if(cuenta_contactos <= 20){
+      inicio = final;
+      final = cuenta_contactos
+    }else if(cuenta_contactos > 20){
+      inicio = final;
+      final = final + 10;
+    }
+    console.log(inicio)
+    console.log(final)
   }else if(final < cuenta_contactos){
     console.log(inicio);
     console.log(final);
@@ -206,8 +236,12 @@ var buscar_todos_contactos = async() =>{
     inicio += 10;
     final +=10;
 
-  }else{
 
+  }else{
+  
+    /*if(final == cuenta_contactos){
+      return
+    }*/
     ultima_pagina_contactos();
     
   }
@@ -219,8 +253,18 @@ var buscar_todos_contactos = async() =>{
 var adelante = document.getElementById("adelante");
 
 var pagina_anterior_contactos = () =>{
- 
-  if(inicio == 10 ){
+  console.log(inicio)
+  console.log(final)
+  console.log(final == cuenta_contactos)
+  if(inicio == 1){
+    console.log("NEW")
+
+    return
+  }else if(inicio == 10){
+
+    console.log("Pruesbaa")
+    console.log("HOLAAAA")
+    primera_pagina_contactos();
     return
   }else if(final == cuenta_contactos){ 
     console.log(inicio);
@@ -247,9 +291,6 @@ var pagina_anterior_contactos = () =>{
 
     console.log(inicio);
     console.log(final);
-  
-  //  final = inicio;
-  //  inicio = inicio - 10;
 
     inicio = inicio - 20;
     final = inicio + 10;
@@ -261,13 +302,15 @@ var pagina_anterior_contactos = () =>{
     document.getElementById('filas').innerHTML = primeraFila + "-" + ultimaFila + " de " + cuenta_contactos + " filas";
 
     console.log("PASANDO2")
-    pagina_intermedia_contactos();
+  //  pagina_intermedia_contactos();
+    primera_pagina_contactos();
 
-     inicio += 10;
+
+    inicio += 10;
     final +=10;
 
     console.log(inicio);
-  console.log(final);
+    console.log(final);
   }
 }
 var atras = document.getElementById("atras");
@@ -326,12 +369,20 @@ var buscar_por_input = async () => {
   let fetch1= await fetch(`http://127.0.0.1:3000/v1/contactos/${input}`)
   .then(response => response.json())
   .then(json => {
-    console.log(json)
+    console.log(json.length)
 
+    mensaje = document.getElementById('wrong_word').classList.contains("d-none");
 
     if(json.length == 0){
+      if(mensaje){
+        document.getElementById("wrong_word").classList.toggle("d-none");
+      }
       return
     }else{
+      if(!mensaje){
+        document.getElementById("wrong_word").classList.toggle("d-none");
+      }
+
       document.getElementById("tabla_contactos").innerHTML = "";
       for (i = 0; i < json.length; i++) {
         console.log(json)

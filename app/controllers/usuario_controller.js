@@ -111,17 +111,24 @@ exports.delete = (req, res) => {
 
 
 //login creacion token
-
+var usuarioExiste = "";
+var usuarioAdmin = "";
 exports.login = (req, res) =>{
 
   Usuario.findByEmail(req.body.email, (err, data) => {
-
-
+    console.log(data);
+    console.log("data");
     if(data.length == 1){
       if(req.body.email == data[0].email && req.body.password == data[0].password){
         let token = jwt.sign({usuario: data[0].email, admin: data[0].admin, id: data[0].id}, jwtClave)
         res.status(200).send({token: token, admin: data[0].admin
         })  
+        usuarioAdmin = data[0].admin; 
+        usuarioExiste = true;
+        console.log(usuarioAdmin)
+
+        console.log(usuarioExiste)
+
       }else{
         res.status(401).send({error: "usuario o clave incorrectos"})
       }
@@ -133,34 +140,33 @@ exports.login = (req, res) =>{
 };
 
 
-//midleware verificacion Token
+//midlewares
 
-exports.verificarToken = (req, res, next) =>{
+exports.verificarAdmin = (req, res, next) =>{
 
+  if(usuarioAdmin == 1){
+    console.log("Es Admin")
 
-  var token_local = localStorage.getItem("token");
-  console.log(token_local)
+    next();
+    return
+  }else{ 
+    res.send("Usuario no es admin")
+  }
+}
+exports.verificarUsuario = (req, res, next) =>{
+  console.log(usuarioExiste)
 
-  if(token){
-    let decodificado = jwt.verify(token, jwtClave);
-    console.log(decodificado);
-    if(!decodificado || decodificado.admin == 0){
-      console.log("decodificado");
-      nav_menu.classList.toggle("d-none");
+  if(usuarioExiste == true){
+    console.log("token_local")
 
-      retornarUsuarioNoAutorizado(res);
-    }else{
-      next();
-      return decodificado
-    }
-  }else{
-    retornarUsuarioNoAutorizado(res);
+    next();
+    return
+  }else{ 
+    res.send("Usuario no logueado")
   }
 }
 
-retornarUsuarioNoAutorizado = (respuesta) =>{
-  respuesta.status(401).send({error: "usuario no autorizado"})
-}
+
 /*
 
 //GET BY ID

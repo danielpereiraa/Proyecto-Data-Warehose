@@ -26,9 +26,11 @@ exports.ciudadById = (req, res) => {
   
     const ciudad = new Ciudad({
         id_pais: req.body.id_pais,
-        nombre: req.body.nombre
+        nombre_ciudad: req.body.nombre_ciudad
     });
   
+    console.log(ciudad);
+    
     Ciudad.create(ciudad, (err, data) => {
       if (err)  
         res.status(500).send({
@@ -48,7 +50,7 @@ exports.ciudadById = (req, res) => {
     }
     const ciudad = new Ciudad({
         id_pais: req.body.id_pais,
-        nombre: req.body.nombre
+        nombre_ciudad: req.body.nombre_ciudad
     });
     console.log("holssw")
 

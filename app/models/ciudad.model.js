@@ -3,7 +3,7 @@ const db = require("./db.js");
 const Ciudad = function(ciudad) {
     this.id = ciudad.id
     this.id_pais = ciudad.id_pais;
-    this.nombre = ciudad.nombre;
+    this.nombre_ciudad = ciudad.nombre_ciudad;
 };
 
 Ciudad.findById = (id_pais, result) => {
@@ -18,7 +18,8 @@ Ciudad.findById = (id_pais, result) => {
 };
 
 Ciudad.create = (ciudadNueva, result) => {
-    db.query('INSERT INTO ciudades VALUES (NULL, :id_pais, :nombre)', 
+
+    db.query('INSERT INTO ciudades VALUES (NULL, :id_pais, :nombre_ciudad)', 
         {replacements : ciudadNueva})
         .then(res => {
         result(null, res)
@@ -28,8 +29,9 @@ Ciudad.create = (ciudadNueva, result) => {
 }
 
 Ciudad.updateById = (ciudadId, ciudadNueva, result) => {
-    db.query('UPDATE ciudades SET id_pais = :id_pais, nombre = :nombre WHERE id = :id', 
-    {replacements:{id_pais: ciudadNueva.id_pais, nombre: ciudadNueva.nombre, id: ciudadId}})
+    console.log(ciudadNueva);
+    db.query('UPDATE ciudades SET id_pais = :id_pais, nombre_ciudad = :nombre_ciudad WHERE id = :id', 
+    {replacements:{id_pais: ciudadNueva.id_pais, nombre_ciudad: ciudadNueva.nombre_ciudad, id: ciudadId}})
     .then(res => {
         result(null, res)
         console.log("Ciudad actualizada")
