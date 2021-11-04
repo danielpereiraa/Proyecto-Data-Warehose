@@ -319,7 +319,6 @@ var obtenerCiudades = async (id) =>{
 //POST
 
 var post_region = async() =>{
-  console.log("prueba");
 
   let nombre = document.getElementById("region_nombre").value;
 
@@ -342,13 +341,24 @@ var post_region = async() =>{
       console.log(e.message);
     })
     console.log(data);
-    location.reload();
-  $('#modal_post_region').modal('hide');
+
+    $('#modal_post_region').modal('hide');
+    document.getElementById("myUL").innerHTML = "";
+
+    call_me();
 
 }
 
+var reset_region_post = () => {
+
+  document.getElementById('region_nombre').value = "";
+
+}
+
+var clear_region_post = document.getElementById('guardar_region');
+clear_region_post.addEventListener("click", reset_region_post);
+
 var post_pais = async() =>{
-  console.log(id_region_button);
 
   let nombre = document.getElementById("pais_nombre").value;
   let region_id = id_region_button;
@@ -374,9 +384,19 @@ var post_pais = async() =>{
     console.log(data);
 
   $('#modal_post_pais').modal('hide');
- // location.reload();
+  document.getElementById("myUL").innerHTML = "";
+
+  call_me();
+}
+
+var reset_pais_post = () => {
+
+  document.getElementById('pais_nombre').value = "";
 
 }
+
+var clear_pais_post = document.getElementById('guardar_pais');
+clear_pais_post.addEventListener("click", reset_pais_post);
 
 var post_ciudad = async() =>{
   console.log(id_pais_button);
@@ -406,9 +426,17 @@ var post_ciudad = async() =>{
     console.log(data);
 
   $('#modal_post_ciudad').modal('hide');
-  location.reload();
+  document.getElementById("myUL").innerHTML = "";
 
+  call_me();
 }
+
+var reset_ciudad_post = () => {
+  document.getElementById('ciudad_nombre').value = "";
+}
+
+var clear_ciudad_post = document.getElementById('guardar_ciudad');
+clear_ciudad_post.addEventListener("click", reset_ciudad_post);
 
 //DELETE
 
@@ -424,7 +452,10 @@ var delete_region = async(event) =>{
   .then(res => res.text()) // or res.json()
   .then(res => console.log(res))
   
-  location.reload();
+  document.getElementById("myUL").innerHTML = "";
+
+  call_me();
+  console.log("mal");
 
 }
 
@@ -439,8 +470,9 @@ var delete_pais = async(event) =>{
   .then(res => res.text()) // or res.json()
   .then(res => console.log(res))
   
-  location.reload();
- 
+  document.getElementById("myUL").innerHTML = "";
+
+  call_me(); 
 }
 
 var delete_ciudad = async(event) =>{
@@ -454,8 +486,9 @@ var delete_ciudad = async(event) =>{
   .then(res => res.text()) // or res.json()
   .then(res => console.log(res))
   
-  location.reload();
+  document.getElementById("myUL").innerHTML = "";
 
+  call_me();
 }
 
 //UPDATE
@@ -487,10 +520,19 @@ var update_region = async () => {
     })
 
   $('#modal_put_region').modal('hide');
-  location.reload();
+  document.getElementById("myUL").innerHTML = "";
 
+  call_me();
   
 }
+var reset_region_put = () => {
+
+  document.getElementById('region_put_nombre').value = "";
+
+}
+
+var clear_region_put = document.getElementById('edit_region');
+clear_region_put.addEventListener("click", reset_region_put);
 
 var put_regionId = "";
 
@@ -549,12 +591,18 @@ var update_pais = async () => {
     })
 
   $('#modal_put_pais').modal('hide');
-  location.reload();
-  console.log(region_id);
+  document.getElementById("myUL").innerHTML = "";
 
-
+  call_me();
   
 }
+
+var reset_pais_put = () => {
+  document.getElementById('pais_put_nombre').value = "";
+}
+
+var clear_pais_put = document.getElementById('edit_pais');
+clear_pais_put.addEventListener("click", reset_pais_put);
 
 var put_pais_id = ""
 var obtener_paisID = (event) => {
@@ -644,9 +692,18 @@ var update_ciudad = async () => {
     })
 
   $('#modal_put_ciudad').modal('hide');
-  location.reload();
+  document.getElementById("myUL").innerHTML = "";
 
+  call_me();
 }
+
+var reset_ciudad_put = () => {
+  document.getElementById('ciudad_put_nombre').value = "";
+}
+
+var clear_ciudad_put = document.getElementById('edit_ciudad');
+clear_ciudad_put.addEventListener("click", reset_ciudad_put);
+
 
 
 

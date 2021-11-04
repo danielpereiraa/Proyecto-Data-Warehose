@@ -134,7 +134,7 @@ var obtenerCompañias = async (i) => {
         }
         document.getElementById("filas").innerHTML = "";  
         document.getElementById('filas').innerHTML = "1-" + cuenta +" de " + cuenta + " filas";
-      }else{
+      }else{  
         for(var i = inicio; i < final; i++){
           obtenerCompañias(i)
         }
@@ -287,13 +287,13 @@ var obtenerCompañias = async (i) => {
 
   var post_compañia = async() =>{
  
-    let nombre = document.getElementById("compañia_nombre").value;
+    let nombre_company = document.getElementById("compañia_nombre").value;
     let direccion = document.getElementById("compañia_direccion").value;
     let email = document.getElementById("compañia_email").value;
     let telefono = document.getElementById("compañia_telefono").value;
     let ciudad_id = document.getElementById("compañia_ciudad").value;
   
-    let data = {nombre, direccion, email, telefono, ciudad_id}
+    let data = {nombre_company, direccion, email, telefono, ciudad_id}
 
     console.log(data);
     
@@ -312,10 +312,22 @@ var obtenerCompañias = async (i) => {
       console.log(e.message);
     })
     console.log(data);
-    location.reload();
     $('#modal_nueva_company').modal('hide');
-  
+    buscar_todos();
+
   }
+
+  var reset_company_post = () => {
+    document.getElementById('compañia_nombre').value = "";
+    document.getElementById('compañia_direccion').value = "";
+    document.getElementById('compañia_email').value = "";
+    document.getElementById('compañia_telefono').value = "";
+    document.getElementById('compañia_ciudad').value = "";
+  }
+  
+  var clear_company_post = document.getElementById('guardar_contacto');
+  clear_company_post.addEventListener("click", reset_company_post)
+  
 
 //PUT
 var id_compañia = "";
@@ -342,13 +354,13 @@ var obtener_compañiaID = (event) =>{
 }
 var put_compañia = async () => {
 
-  let nombre = document.getElementById("compañia_put_nombre").value;
+  let nombre_company = document.getElementById("compañia_put_nombre").value;
   let direccion = document.getElementById("compañia_put_direccion").value;
   let email = document.getElementById("compañia_put_email").value;
   let telefono = document.getElementById("compañia_put_telefono").value;
   let ciudad_id = document.getElementById("compañia_put_ciudad").value;
 
-  let data = {nombre, direccion, email, telefono, ciudad_id}
+  let data = {nombre_company, direccion, email, telefono, ciudad_id}
 
     console.log(data);
 
@@ -372,10 +384,21 @@ var put_compañia = async () => {
       console.log(e.message);
     })
 
-  $('#modal_put_region').modal('hide');
-  location.reload();
+  $('#modal_put_company').modal('hide');
+  buscar_todos();
 
 }
+
+var reset_company_put = () => {
+  document.getElementById('compañia_put_nombre').value = "";
+  document.getElementById('compañia_put_direccion').value = "";
+  document.getElementById('compañia_put_email').value = "";
+  document.getElementById('compañia_put_telefono').value = "";
+  document.getElementById('compañia_put_ciudad').value = "";
+}
+
+var clear_company_put = document.getElementById('edit_company');
+clear_company_put.addEventListener("click", reset_company_put)
 
 //DELETE
 
@@ -410,7 +433,9 @@ var delete_compañia = async(event) =>{
   .then(res => res.text()) // or res.json()
   .then(res => console.log(res))
   
-  location.reload();
+  $('#modal_delete_company').modal('hide');
+
+  buscar_todos();
 
 }
 

@@ -432,9 +432,26 @@ var post_contacto = async() =>{
 
    //location.reload();
     $('#modal_nuevo_contacto').modal('hide');
-  
+
+    buscar_todos_contactos();
+    //reset_modal()
   
   }
+
+var reset_modal_post = () => {
+    document.getElementById('contacto_nombre').value = "";
+    document.getElementById('contacto_apellido').value = "";
+    document.getElementById('contacto_Email').value = "";
+    document.getElementById('contacto_pais').value = "";
+    document.getElementById('contacto_compañia').value = "";
+    document.getElementById('contacto_direccion').value = "";
+  }
+
+var clear = document.getElementById('guardar_contacto');
+clear.addEventListener("click", reset_modal_post)
+
+
+  
 
 //PUT 
 
@@ -492,10 +509,23 @@ let direccion = document.getElementById("contacto_put_direccion").value;
 
 //  document.getElementById('exampleModalCenter').modal.fade
 $('#modal_put_contacto').modal('hide');
-location.reload();
-
+buscar_todos_contactos();  
 
 }
+
+
+var reset_modal_put = () => {
+  document.getElementById('contacto_put_nombre').value = "";
+  document.getElementById('contacto_put_apellido').value = "";
+  document.getElementById('contacto_put_email').value = "";
+  document.getElementById('contacto_put_pais').value = "";
+  document.getElementById('contacto_put_compañia').value = "";
+  document.getElementById('contacto_put_direccion').value = "";
+}
+
+var clear_edit = document.getElementById('edit_contacto');
+clear_edit.addEventListener("click", reset_modal_put)
+
 
 //DELETE 
 
@@ -532,8 +562,10 @@ var delete_contacto = async() =>{
     .then(res => res.text()) // or res.json()
     .then(res => console.log(res))
     
-    location.reload();
-  
+    buscar_todos_contactos();  
+
+    $('#modal_delete_contacto').modal('hide');
+
   }
 
 var eliminar_varios = () =>{

@@ -2,7 +2,7 @@ const db = require("./db.js");
 
 const Compañias = function(compañias) {
     this.id = compañias.id
-    this.nombre = compañias.nombre_company;
+    this.nombre_company = compañias.nombre_company;
     this.direccion = compañias.direccion;
     this.email = compañias.email;
     this.telefono = compañias.telefono;
@@ -30,8 +30,8 @@ db.query('INSERT INTO compañias VALUES (NULL, :nombre_company, :direccion, :ema
 }
 
 Compañias.updateById = (companyId, compañiaNueva, result) => {
-    db.query('UPDATE compañias SET nombre_company = :nombre, direccion = :direccion, email = :email, telefono = :telefono, ciudad_id = :ciudad_id  WHERE id = :id', 
-    {replacements:{nombre: compañiaNueva.nombre, direccion: compañiaNueva.direccion, email: compañiaNueva.email, telefono: compañiaNueva.telefono, ciudad_id: compañiaNueva.ciudad_id,  id: companyId}})
+    db.query('UPDATE compañias SET nombre_company = :nombre_company, direccion = :direccion, email = :email, telefono = :telefono, ciudad_id = :ciudad_id  WHERE id = :id', 
+    {replacements:{nombre_company: compañiaNueva.nombre_company, direccion: compañiaNueva.direccion, email: compañiaNueva.email, telefono: compañiaNueva.telefono, ciudad_id: compañiaNueva.ciudad_id,  id: companyId}})
     .then(res => {
         result(null, res)
         console.log("Compañia actualizada")

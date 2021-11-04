@@ -29,14 +29,16 @@ exports.create = (req, res) => {
     }
 
     const compañia = new Compañias({
-      nombre: req.body.nombre_company,
+      nombre_company: req.body.nombre_company,
       direccion: req.body.direccion,
       email: req.body.email,
       telefono: req.body.telefono,
       ciudad_id: req.body.ciudad_id
     });
 
-    console.log(compañia)
+    console.log(compañia);    
+    console.log(compañia);
+
   
     Compañias.create(compañia, (err, data) => {
       if (err)  
@@ -58,7 +60,7 @@ exports.update = (req, res) => {
     });
   }
   const compañia = new Compañias({
-    nombre: req.body.nombre_company,
+    nombre_company: req.body.nombre_company,
     direccion: req.body.direccion,
     email: req.body.email,
     telefono: req.body.telefono,

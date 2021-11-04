@@ -1,5 +1,5 @@
 const conf_db_host = 'localhost', // host
-    conf_db_name   = 'warehouse', // database name
+    conf_db_name   = 'data_warehouse', // database name
     conf_user     = 'root',           // user name
     conf_password = '123',               // password
     conf_port     = '3306';           // port number

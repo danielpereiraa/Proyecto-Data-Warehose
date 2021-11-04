@@ -395,11 +395,25 @@ var post_usuario = async() =>{
 
   //  document.getElementById('exampleModalCenter').modal.fade
   $('#exampleModalCenter').modal('hide');
+  buscar_todos_usuarios();
 
   }else{
     msg.classList.toggle("d-none")
   }
 }
+
+var reset_usuario_post = () => {
+  document.getElementById('user_nombre').value = "";
+  document.getElementById('user_apellido').value = "";
+  document.getElementById('user_Email').value = "";
+  document.getElementById('user_admin').value = "";
+  document.getElementById('user_password').value = "";
+  document.getElementById('user_paswordx2').value = "";
+}
+
+var clear_usuario_post = document.getElementById('guardar_user');
+clear_usuario_post.addEventListener("click", reset_usuario_post)
+
 
 //PUT
 var update_id = "";
@@ -462,12 +476,24 @@ var update_usuario = async () => {
     })
 
   $('#edit_users').modal('hide');
-  location.reload();
+  buscar_todos_usuarios();
 
   }else{
     msg.classList.toggle("d-none")
   }
 }
+
+var reset_usuario_put = () => {
+document.getElementById('user_nombre').value = "";
+document.getElementById('user_apellido').value = "";
+document.getElementById('user_Email').value = "";
+document.getElementById('user_admin').value = "";
+document.getElementById('user_password').value = "";
+document.getElementById('user_paswordx2').value = "";
+}
+
+var clear_usuario_put = document.getElementById('edit_usuario');
+clear_usuario_put.addEventListener("click", reset_usuario_put)
 
 //DELETE
 
@@ -497,7 +523,7 @@ var delete_usuario = async(event) =>{
 .then(res => res.text()) // or res.json()
 .then(res => console.log(res))
 
-location.reload();
+buscar_todos_usuarios();
 
 }
 
