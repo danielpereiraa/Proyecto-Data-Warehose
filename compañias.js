@@ -40,13 +40,32 @@ var display_compañias = () =>{
 var boton_compañias = document.getElementById('boton_compañias');
 boton_compañias.addEventListener("click", display_compañias)
 
+
+var autenticar_usuario = async() =>{
+
+  var tokenUsuario = localStorage.getItem("token")
+  console.log(tokenUsuario)
+
+  if(tokenUsuario == null){
+    location.reload();
+  }
+}
 //GET
 
 
 var cuenta;
 var obtenerCompañias = async (i) => {
 
-  const response = await fetch('http://127.0.0.1:3000/v1/companies')
+  var tokenUsuario = localStorage.getItem("token")
+  let data = {tokenUsuario};
+
+  const response = await fetch('http://127.0.0.1:3000/v1/companiess', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data),
+  })
     .then(response => response.json())
     .then(json => {
       var count = Object.keys(json).length;
@@ -114,32 +133,34 @@ var obtenerCompañias = async (i) => {
     }
 
   
-  var inicio = 1;
+  var inicio_company = 1;
   var final = 10;
   
 
     var primera_pagina = async() =>{
-      var inicio = 1;
+
+      autenticar_usuario();
+
+      var inicio_company = 1;
       var final = 10;
-      console.log(inicio);
-      console.log(final);
+
       document.getElementById("tabla_compañias").innerHTML = "";
 
       var get_companies = await obtenerCompañias(0)
 
       if(cuenta < final){
         console.log('PRue')
-        for(var i = inicio; i < cuenta; i++){
+        for(var i = inicio_company; i < cuenta; i++){
           obtenerCompañias(i)
         }
         document.getElementById("filas").innerHTML = "";  
         document.getElementById('filas').innerHTML = "1-" + cuenta +" de " + cuenta + " filas";
       }else{  
-        for(var i = inicio; i < final; i++){
+        for(var i = inicio_company; i < final; i++){
           obtenerCompañias(i)
         }
     
-        console.log(inicio);
+        console.log(inicio_company);
         console.log(final);
   
         document.getElementById('filas').innerHTML = "1-10 de " + cuenta + " filas";
@@ -147,32 +168,34 @@ var obtenerCompañias = async (i) => {
       }
       } 
     var pagina_intermedia = () =>{
-      console.log(inicio);
-      console.log(final);
+      
+      autenticar_usuario();
+
       document.getElementById("tabla_compañias").innerHTML = "";
 
-      for(var i = inicio; i < final; i++){
+      for(var i = inicio_company; i < final; i++){
         obtenerCompañias(i)
       }
-      console.log(inicio);
+      console.log(inicio_company);
       console.log(final);
       
 
     } 
     var ultima_pagina = () =>{
-      var primeraFila = inicio + 1;
+      
+      autenticar_usuario();
+      var primeraFila = inicio_company + 1;
 
       document.getElementById('filas').innerHTML = primeraFila + "-" + cuenta + " de " + cuenta + " filas";
-  //    document.getElementById("adelante").removeEventListener("click", buscar_todos);
       document.getElementById("tabla_compañias").innerHTML = "";
 
-      for(var i = inicio; i < cuenta; i++){
+      for(var i = inicio_company; i < cuenta; i++){
         obtenerCompañias(i)
       }
       
-      //inicio += 10;
+      //inicio_company += 10;
       final = cuenta;
-      console.log(inicio);
+      console.log(inicio_company);
       console.log(final);
       console.log(cuenta);
 
@@ -181,29 +204,29 @@ var obtenerCompañias = async (i) => {
     var buscar_todos = async() =>{
     console.log(final > (cuenta + 10))
 
-    if(inicio == 1){
+    if(inicio_company == 1){
   
     var myFuncionc = await primera_pagina();
 
     if(cuenta <= 10){
       return
     }else if(cuenta <= 20){
-      inicio = final;
+      inicio_company = final;
       final = cuenta
     }else if(cuenta > 20){
-      inicio = final;
+      inicio_company = final;
       final = final + 10;
     }
 
     }else if(final < cuenta){
 
-      var primeraFila = inicio + 1;
+      var primeraFila = inicio_company + 1;
       var ultimaFila = final;
       document.getElementById('filas').innerHTML = primeraFila + "-" + ultimaFila + " de " + cuenta + " filas";
 
       pagina_intermedia();
 
-      inicio += 10;
+      inicio_company += 10;
       final +=10;
 
     }else{
@@ -220,31 +243,31 @@ var obtenerCompañias = async (i) => {
     console.log(cuenta);
 
     console.log(final == cuenta);
-    if(inicio == 1){
+    if(inicio_company == 1){
       console.log("NEW")
   
       return
-    }else if(inicio == 10 ){
+    }else if(inicio_company == 10 ){
       primera_pagina(); 
       return
     }else if(final == cuenta){ 
-      console.log(inicio);
+      console.log(inicio_company);
       console.log(final);
-      var primeraFila = inicio - 9;
-      var ultimaFila = inicio;
+      var primeraFila = inicio_company - 9;
+      var ultimaFila = inicio_company;
 
       console.log(primeraFila);
       console.log(ultimaFila);
-      final = inicio;
-      inicio = inicio - 10;
+      final = inicio_company;
+      inicio_company = inicio_company - 10;
       document.getElementById('filas').innerHTML = primeraFila + "-" + ultimaFila + " de " + cuenta + " filas";
 
       console.log("PASANDO")
       pagina_intermedia();
 
-      inicio += 10;
+      inicio_company += 10;
       final +=10;
-      console.log(inicio);
+      console.log(inicio_company);
       console.log(final);
      
 
@@ -252,19 +275,19 @@ var obtenerCompañias = async (i) => {
 
     }else{
 
-      console.log(inicio);
+      console.log(inicio_company);
       console.log(final);
      
   
 
 
-    //  final = inicio;
-    //  inicio = inicio - 10;
+    //  final = inicio_company;
+    //  inicio_company = inicio_company - 10;
 
-      inicio = inicio - 20;
-      final = inicio + 10;
+      inicio_company = inicio_company - 20;
+      final = inicio_company + 10;
 
-      var primeraFila = inicio + 1;
+      var primeraFila = inicio_company + 1;
       var ultimaFila = final;
       console.log(primeraFila);
       console.log(ultimaFila);
@@ -273,11 +296,11 @@ var obtenerCompañias = async (i) => {
       console.log("PASANDO2")
       pagina_intermedia();
 
-       inicio += 10;
+      inicio_company += 10;
       final +=10;
 
-      console.log(inicio);
-    console.log(final);
+      console.log(inicio_company);
+      console.log(final);
     }
   }
   var atras = document.getElementById("atras");
@@ -286,14 +309,16 @@ var obtenerCompañias = async (i) => {
   //POST
 
   var post_compañia = async() =>{
- 
+
+    autenticar_usuario(); 
     let nombre_company = document.getElementById("compañia_nombre").value;
     let direccion = document.getElementById("compañia_direccion").value;
     let email = document.getElementById("compañia_email").value;
     let telefono = document.getElementById("compañia_telefono").value;
     let ciudad_id = document.getElementById("compañia_ciudad").value;
-  
-    let data = {nombre_company, direccion, email, telefono, ciudad_id}
+    var tokenUsuario = localStorage.getItem("token")
+
+    let data = {nombre_company, direccion, email, telefono, ciudad_id, tokenUsuario}
 
     console.log(data);
     
@@ -354,13 +379,16 @@ var obtener_compañiaID = (event) =>{
 }
 var put_compañia = async () => {
 
+  autenticar_usuario(); 
+
   let nombre_company = document.getElementById("compañia_put_nombre").value;
   let direccion = document.getElementById("compañia_put_direccion").value;
   let email = document.getElementById("compañia_put_email").value;
   let telefono = document.getElementById("compañia_put_telefono").value;
   let ciudad_id = document.getElementById("compañia_put_ciudad").value;
+  var tokenUsuario = localStorage.getItem("token")
 
-  let data = {nombre_company, direccion, email, telefono, ciudad_id}
+  let data = {nombre_company, direccion, email, telefono, ciudad_id, tokenUsuario}
 
     console.log(data);
 
@@ -407,8 +435,11 @@ var company_delete_ID = (event) =>{
     var boton = event.target.id;
     id_delete_company = boton;
 }
+
 var delete_compañia = async(event) =>{
-  console.log(id_delete_company)
+  
+  autenticar_usuario();
+
   var boton = id_delete_company;
   var patt1 = /[0-9]/g;
   var digits = boton.match(patt1);
@@ -424,12 +455,17 @@ var delete_compañia = async(event) =>{
       id_delelte_compañia =  id_delelte_compañia + digits[i]
     }
   }
-  console.log(id_delelte_compañia);
 
+  var tokenUsuario = localStorage.getItem("token");
+  let data = {tokenUsuario};
 
   const response = await fetch(`http://127.0.0.1:3000/v1/companies/${id_delelte_compañia}`, {
     method: 'DELETE',
-  })
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data),
+})
   .then(res => res.text()) // or res.json()
   .then(res => console.log(res))
   

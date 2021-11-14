@@ -1,4 +1,10 @@
+var inicio = 1;
+var final = 10 ;
+
 var display_usuarios =() =>{
+
+  inicio = 1;
+  final = 10 ;
 
   adelante.removeEventListener("click", buscar_todos_contactos);
   atras.removeEventListener("click", pagina_anterior_contactos);
@@ -29,7 +35,6 @@ var display_usuarios =() =>{
   }
  // bienvenidos.classList.toggle("d-none");
   document.getElementById("usuarios").classList.toggle("d-none");
-  console.log("hola");
   buscar_todos_usuarios();
 
   var footer = document.getElementsByTagName('footer')[0].classList.contains("d-none");
@@ -50,7 +55,6 @@ var login = async () =>{
   let password = document.getElementById("password").value;
 
   let data = {email, password}
-  console.log(data);
 
   var endpoint = 'http://127.0.0.1:3000/v1/login';
 
@@ -67,11 +71,7 @@ var login = async () =>{
     console.log(e.message);
   })
   
-  console.log(json);
-  console.log(json.token);  
-  console.log(json.admin);
 
-  console.log("json.token")
 
   localStorage.setItem("token", json.token)
 
@@ -81,8 +81,6 @@ var login = async () =>{
   var nav_menu = document.getElementById("nav_menu")
   var nav_usuarios = document.getElementById("nav_usuarios")
   var token_local = localStorage.getItem("token");
-    console.log(token_local)
-    console.log(typeof token_local !== 'undefined')
   if (typeof json.token == 'undefined'){
     msg.classList.toggle("d-none")
   }else{
@@ -92,11 +90,12 @@ var login = async () =>{
       console.log(json.admin);
 
     }
-    console.log(json.admin);
 
     section.classList.toggle("d-none");
     bienvenidos.classList.toggle("d-none");
     nav_menu.classList.toggle("d-none");
+
+    autenticar_usuario()
 
   
     
@@ -111,18 +110,45 @@ var login = async () =>{
 
 }
 
+var autenticar_usuario = async() =>{
+
+  var tokenUsuario = localStorage.getItem("token")
+  console.log(tokenUsuario)
+
+  if(tokenUsuario == null){
+    location.reload();
+  }
+}
+
+//var boton_region = document.getElementById('boton_region');
+var region_post = document.getElementById('guardar_region');
+var region_put = document.getElementById('edit_region');
+
+//boton_region.addEventListener("click", autenticar_usuario)
+region_post.addEventListener("click", autenticar_usuario);
+region_put.addEventListener("click", autenticar_usuario);
+
+
+
 //GET
 
 var cuentaUsuarios;
 
 var obtenerUsuarios = async (i) => {
 
-  const response = await fetch('http://127.0.0.1:3000/v1/usuarios')
+
+
+
+  var endpoint = 'http://127.0.0.1:3000/v1/usuarios';
+
+
+  const response = await fetch(endpoint)
   .then(response => response.json())
   .then(json => {
 
     var count = Object.keys(json).length;
     cuentaUsuarios = count;
+    console.log(cuentaUsuarios);
 
     var tabla = document.getElementById('tabla_usuarios');
 
@@ -191,20 +217,21 @@ var obtenerUsuarios = async (i) => {
 
 
   }
-var inicio = 0;
-var final = 10 ;
+
 
 var primera_pagina_usuarios = async() =>{
-  var inicio = 1;
-  var final = 10;
-  console.log(inicio);
-  console.log(final);
+
+  autenticar_usuario();
+
+
+  inicio = 1;
+  final = 10;
+
   document.getElementById("tabla_usuarios").innerHTML = "";
 
   var get_usuario = await obtenerUsuarios(0)
 
   if(cuentaUsuarios < final){
-    console.log('PRue')
     for(var i = inicio; i < cuentaUsuarios; i++){
       obtenerUsuarios(i)
     }
@@ -223,6 +250,9 @@ var primera_pagina_usuarios = async() =>{
   }
 } 
 var pagina_intermedia_usuarios = () =>{
+
+  autenticar_usuario();
+
   console.log(inicio);
   console.log(final);
   document.getElementById("tabla_usuarios").innerHTML = "";
@@ -236,6 +266,9 @@ var pagina_intermedia_usuarios = () =>{
 
 } 
 var ultima_pagina_usuarios = () =>{
+
+  autenticar_usuario();
+console.log("hoka");
   var primeraFila = inicio + 1;
 
   document.getElementById('filas').innerHTML = primeraFila + "-" + cuentaUsuarios + " de " + cuentaUsuarios + " filas";
@@ -248,7 +281,10 @@ var ultima_pagina_usuarios = () =>{
   
   //inicio += 10;
 
+  console.log("final");
+
     final = cuentaUsuarios;
+    console.log(final);
 
   
 
@@ -256,7 +292,6 @@ var ultima_pagina_usuarios = () =>{
 
 } 
 var buscar_todos_usuarios = async() =>{
-  console.log(inicio)
   if(inicio == 1){
 
   var myFuncionc = await primera_pagina_usuarios();
@@ -284,6 +319,7 @@ var buscar_todos_usuarios = async() =>{
   }else{
 
     ultima_pagina_usuarios();
+    console.log(inicio);
     console.log(inicio);
     console.log(final);
   }
@@ -360,6 +396,9 @@ var atras = document.getElementById("atras");
 //POST
 
 var post_usuario = async() =>{
+
+ //autenticar_usuario();
+
   console.log("prueba");
 
   let nombre = document.getElementById("user_nombre").value;
@@ -371,11 +410,16 @@ var post_usuario = async() =>{
 
   var msg = document.getElementById("warning_password");
 
+  var tokenUsuario = localStorage.getItem("token")
+
+
+  console.log(tokenUsuario);
 
   if(password == repeat_password){
-    let data = {nombre, apellido, email, admin, password}
+    let data = {nombre, apellido, email, admin, password, tokenUsuario}
 
     console.log("data");
+    console.log(data);
   
     var endpoint = 'http://127.0.0.1:3000/v1/usuarios';
   
@@ -405,7 +449,7 @@ var post_usuario = async() =>{
 var reset_usuario_post = () => {
   document.getElementById('user_nombre').value = "";
   document.getElementById('user_apellido').value = "";
-  document.getElementById('user_Email').value = "";
+  document.getElementById('user_email').value = "";
   document.getElementById('user_admin').value = "";
   document.getElementById('user_password').value = "";
   document.getElementById('user_paswordx2').value = "";
@@ -441,6 +485,8 @@ var obtener_usuarioID = (event) =>{
 }
 
 var update_usuario = async () => {
+
+  autenticar_usuario();
  
   let nombre = document.getElementById("user_nombre_edit").value;
   let apellido = document.getElementById("user_apellido_edit").value;
@@ -499,7 +545,11 @@ clear_usuario_put.addEventListener("click", reset_usuario_put)
 
 var delete_usuario = async(event) =>{
 
-  console.log(event.target.id)
+  autenticar_usuario();
+
+  var tokenUsuario = localStorage.getItem("token");
+  let data = {tokenUsuario};
+
   var boton = event.target.id
   var patt1 = /[0-9]/g;
   var digits = boton.match(patt1);
@@ -516,9 +566,14 @@ var delete_usuario = async(event) =>{
     }
   }
   console.log(id_delelte_user);
+  
 
   const response = await fetch(`http://127.0.0.1:3000/v1/usuarios/${id_delelte_user}`, {
   method: 'DELETE',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(data),
 })
 .then(res => res.text()) // or res.json()
 .then(res => console.log(res))

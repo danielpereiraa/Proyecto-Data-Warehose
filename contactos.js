@@ -1,6 +1,6 @@
 var cuenta_contactos;
-  var inicio = 1;
-  var final = 10;
+var inicio_contactos = 1;
+var final = 10;
 
 var display_contactos = () =>{
 
@@ -34,6 +34,7 @@ var display_contactos = () =>{
   }
   document.getElementById('contactos').classList.toggle("d-none");
   //primera_pagina_contactos();
+  
   buscar_todos_contactos();
 
   var footer = document.getElementsByTagName('footer')[0].classList.contains("d-none");
@@ -45,8 +46,15 @@ var display_contactos = () =>{
 var boton_contactos = document.getElementById('boton_contactos');
 boton_contactos.addEventListener("click", display_contactos)
 
+var autenticar_usuario = async() =>{
 
+  var tokenUsuario = localStorage.getItem("token")
+  console.log(tokenUsuario)
 
+  if(tokenUsuario == null){
+    location.reload();
+  }
+}
 //GET
 
   var obtenerContactos = async (i) => {
@@ -143,9 +151,11 @@ acciones.appendChild(updateButton);
 
 var primera_pagina_contactos = async() =>{
   
-  var inicio = 1;
+  autenticar_usuario();
+
+  var inicio_contactos = 1;
   var final = 10;
-  console.log(inicio);
+  console.log(inicio_contactos);
   console.log(final);
   document.getElementById("tabla_contactos").innerHTML = "";
 
@@ -156,14 +166,14 @@ var primera_pagina_contactos = async() =>{
 
   if(cuenta_contactos < final){
     console.log('PRue')
-    for(var i = inicio; i < cuenta_contactos; i++){
+    for(var i = inicio_contactos; i < cuenta_contactos; i++){
       obtenerContactos(i)
     }
     document.getElementById("filas").innerHTML = "";  
     document.getElementById('filas').innerHTML = "1-" + cuenta_contactos +" de " + cuenta_contactos + " filas";
   }else{
     
-    for(var i = inicio; i < final; i++){
+    for(var i = inicio_contactos; i < final; i++){
       obtenerContactos(i)
     }
     document.getElementById("filas").innerHTML = "";  
@@ -171,69 +181,73 @@ var primera_pagina_contactos = async() =>{
   }
 
 
-  console.log(inicio);
+  console.log(inicio_contactos);
   console.log(final);
 
 
 } 
 var pagina_intermedia_contactos = () =>{
-  console.log(inicio);
-  console.log(final);
+
+  autenticar_usuario();
+
   document.getElementById("tabla_contactos").innerHTML = "";
 
-  for(var i = inicio; i < final; i++){
+  for(var i = inicio_contactos; i < final; i++){
     obtenerContactos(i)
   }
-  console.log(inicio);
+  console.log(inicio_contactos);
   console.log(final);
   
 
 } 
 var ultima_pagina_contactos = () =>{
-  var primeraFila = inicio + 1;
+
+  autenticar_usuario();
+
+  var primeraFila = inicio_contactos + 1;
 
   document.getElementById('filas').innerHTML = primeraFila + "-" + cuenta_contactos + " de " + cuenta_contactos + " filas";
   document.getElementById("tabla_contactos").innerHTML = "";
 
-  for(var i = inicio; i < cuenta_contactos; i++){
+  for(var i = inicio_contactos; i < cuenta_contactos; i++){
     obtenerContactos(i)
   }
   
-  //inicio += 10;
+  //inicio_contactos += 10;
   final = cuenta_contactos;
-  console.log(inicio);
+  console.log(inicio_contactos);
   console.log(final);
 } 
 
 var buscar_todos_contactos = async() =>{
-  console.log(inicio)
+  console.log(inicio_contactos)
   console.log(final)
   console.log(final < cuenta_contactos);
 
-  if(inicio == 1){
+  if(inicio_contactos == 1){
     var myFuncionc = await primera_pagina_contactos();
     
     if(cuenta_contactos <= 10){
       return
     }else if(cuenta_contactos <= 20){
-      inicio = final;
+      inicio_contactos = final;
       final = cuenta_contactos
     }else if(cuenta_contactos > 20){
-      inicio = final;
+      inicio_contactos = final;
       final = final + 10;
     }
-    console.log(inicio)
+    console.log(inicio_contactos)
     console.log(final)
   }else if(final < cuenta_contactos){
-    console.log(inicio);
+    console.log(inicio_contactos);
     console.log(final);
-    var primeraFila = inicio + 1;
+    var primeraFila = inicio_contactos + 1;
     var ultimaFila = final;
     document.getElementById('filas').innerHTML = primeraFila + "-" + ultimaFila + " de " + cuenta_contactos + " filas";
 
     pagina_intermedia_contactos();
 
-    inicio += 10;
+    inicio_contactos += 10;
     final +=10;
 
 
@@ -253,35 +267,35 @@ var buscar_todos_contactos = async() =>{
 var adelante = document.getElementById("adelante");
 
 var pagina_anterior_contactos = () =>{
-  console.log(inicio)
+  console.log(inicio_contactos)
   console.log(final)
   console.log(final == cuenta_contactos)
-  if(inicio == 1){
+  if(inicio_contactos == 1){
     console.log("NEW")
 
     return
-  }else if(inicio == 10){
+  }else if(inicio_contactos == 10){
 
     console.log("Pruesbaa")
     console.log("HOLAAAA")
     primera_pagina_contactos();
     return
   }else if(final == cuenta_contactos){ 
-    console.log(inicio);
+    console.log(inicio_contactos);
     console.log(final);
-    var primeraFila = inicio - 9;
-    var ultimaFila = inicio;
+    var primeraFila = inicio_contactos - 9;
+    var ultimaFila = inicio_contactos;
 
     console.log(primeraFila);
     console.log(ultimaFila);
-    final = inicio;
-    inicio = inicio - 10;
+    final = inicio_contactos;
+    inicio_contactos = inicio_contactos - 10;
     document.getElementById('filas').innerHTML = primeraFila + "-" + ultimaFila + " de " + cuenta_contactos + " filas";
 
     console.log("PASANDO")
     pagina_intermedia_contactos();
 
-    inicio += 10;
+    inicio_contactos += 10;
     final +=10;
 
 
@@ -289,13 +303,13 @@ var pagina_anterior_contactos = () =>{
 
   }else{
 
-    console.log(inicio);
+    console.log(inicio_contactos);
     console.log(final);
 
-    inicio = inicio - 20;
-    final = inicio + 10;
+    inicio_contactos = inicio_contactos - 20;
+    final = inicio_contactos + 10;
 
-    var primeraFila = inicio + 1;
+    var primeraFila = inicio_contactos + 1;
     var ultimaFila = final;
     console.log(primeraFila);
     console.log(ultimaFila);
@@ -306,10 +320,10 @@ var pagina_anterior_contactos = () =>{
     primera_pagina_contactos();
 
 
-    inicio += 10;
+    inicio_contactos += 10;
     final +=10;
 
-    console.log(inicio);
+    console.log(inicio_contactos);
     console.log(final);
   }
 }
@@ -404,6 +418,8 @@ var buscar_por_input = async () => {
 //POST
 
 var post_contacto = async() =>{
+
+  autenticar_usuario();
   
     let nombre_contacto = document.getElementById("contacto_nombre").value;
     let apellido_contacto = document.getElementById("contacto_apellido").value;
@@ -411,8 +427,9 @@ var post_contacto = async() =>{
     let pais = document.getElementById("contacto_pais").value;
     let nombre_company = document.getElementById("contacto_compañia").value;
     let direccion = document.getElementById("contacto_direccion").value;  
-  
-      let data = {nombre_contacto, apellido_contacto, email, pais, nombre_company, direccion}
+    var tokenUsuario = localStorage.getItem("token")
+
+      let data = {nombre_contacto, apellido_contacto, email, pais, nombre_company, direccion, tokenUsuario}
       
       console.log(data)
       var endpoint = 'http://127.0.0.1:3000/v1/contactos';
@@ -478,16 +495,19 @@ var obtener_contactoID = (event) =>{
 
 }
 var put_contacto = async() => {
-
-let nombre_contacto = document.getElementById("contacto_put_nombre").value;
-let apellido_contacto = document.getElementById("contacto_put_apellido").value;
-let email = document.getElementById("contacto_put_email").value;
-let pais = document.getElementById("contacto_put_pais").value;
-let nombre_company = document.getElementById("contacto_put_compañia").value;
-let direccion = document.getElementById("contacto_put_direccion").value;
+  autenticar_usuario();
 
 
-    let data = {nombre_contacto, apellido_contacto, email, pais, nombre_company, direccion}
+  let nombre_contacto = document.getElementById("contacto_put_nombre").value;
+  let apellido_contacto = document.getElementById("contacto_put_apellido").value;
+  let email = document.getElementById("contacto_put_email").value;
+  let pais = document.getElementById("contacto_put_pais").value;
+  let nombre_company = document.getElementById("contacto_put_compañia").value;
+  let direccion = document.getElementById("contacto_put_direccion").value;
+  var tokenUsuario = localStorage.getItem("token")
+
+
+    let data = {nombre_contacto, apellido_contacto, email, pais, nombre_company, direccion, tokenUsuario}
 
     var id = id_contacto
     console.log(id);
@@ -551,14 +571,19 @@ var obtener_contacto_delete_ID = (event) =>{
 }
 
 var delete_contacto = async() =>{
-    var contactoId = id_delete_contacto;
-    console.log(contactoId)
+  autenticar_usuario();
 
-  
+    var contactoId = id_delete_contacto;
+    var tokenUsuario = localStorage.getItem("token");
+    let data = {tokenUsuario};
   
     const response = await fetch(`http://127.0.0.1:3000/v1/contactos/${contactoId}`, {
       method: 'DELETE',
-    })
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data),
+  })
     .then(res => res.text()) // or res.json()
     .then(res => console.log(res))
     

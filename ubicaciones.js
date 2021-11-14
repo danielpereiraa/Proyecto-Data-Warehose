@@ -28,6 +28,7 @@ if(!seccion_welcome){
     document.getElementById('compañias').classList.toggle("d-none");
   }
   document.getElementById('region_ciudad').classList.toggle("d-none");
+
   call_me();
   var footer = document.getElementsByTagName('footer')[0].classList.contains("d-none");
   console.log(footer);
@@ -61,7 +62,16 @@ for (i = 0; i < toggler.length; i++) {
 
 var obtenerRegion = async(i) =>{
 
-  const response = await fetch('http://127.0.0.1:3000/v1/regiones')
+  var tokenUsuario = localStorage.getItem("token")
+  let data = {tokenUsuario};
+
+  const response = await fetch('http://127.0.0.1:3000/v1/regioness', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data),
+  })
   .then(response => response.json())
   .then(json => {
 
@@ -138,21 +148,30 @@ var obtenerRegion = async(i) =>{
 
 }
 var call_me = async () =>{
-  let val1 = await obtenerRegion();
-  let val2 = await obtenerPaises();
+  document.getElementById("myUL").innerHTML = "";
+
+  let val1 = await autenticar_usuario();
+  let val2 = await obtenerRegion();
+  let val3 = await obtenerPaises();
   let val4 = tree_view();
 }
 //call_me()
+
+var autenticar_usuario = async() =>{
+
+  var tokenUsuario = localStorage.getItem("token")
+  console.log(tokenUsuario)
+
+  if(tokenUsuario == null){
+    location.reload();
+  }
+}
 
 
 var obtenerPaises = async (id) =>{
 
   var regionId = id;
   var ul = document.getElementById('region' + regionId);
-
-
-
-
 
   const response = await fetch(`http://127.0.0.1:3000/v1/paises/${regionId}`)
   .then(response => response.json())
@@ -320,9 +339,13 @@ var obtenerCiudades = async (id) =>{
 
 var post_region = async() =>{
 
+  autenticar_usuario();
+
+  var tokenUsuario = localStorage.getItem("token")
+
   let nombre = document.getElementById("region_nombre").value;
 
-  let data = {nombre}
+  let data = {nombre, tokenUsuario}
 
     console.log(data);
   
@@ -360,10 +383,13 @@ clear_region_post.addEventListener("click", reset_region_post);
 
 var post_pais = async() =>{
 
+  autenticar_usuario();
+
   let nombre = document.getElementById("pais_nombre").value;
   let region_id = id_region_button;
+  var tokenUsuario = localStorage.getItem("token");
 
-  let data = {nombre, region_id}
+  let data = {nombre, region_id, tokenUsuario}
 
     console.log(data);
   
@@ -399,13 +425,14 @@ var clear_pais_post = document.getElementById('guardar_pais');
 clear_pais_post.addEventListener("click", reset_pais_post);
 
 var post_ciudad = async() =>{
-  console.log(id_pais_button);
+  
+  autenticar_usuario();
 
   let nombre_ciudad = document.getElementById("ciudad_nombre").value;
   let id_pais = id_pais_button;
+  var tokenUsuario = localStorage.getItem("token");
 
-
-  let data = {id_pais, nombre_ciudad }
+  let data = {id_pais, nombre_ciudad, tokenUsuario}
 
     console.log(data);
   
@@ -442,12 +469,20 @@ clear_ciudad_post.addEventListener("click", reset_ciudad_post);
 
 
 var delete_region = async(event) =>{
-  console.log(event.target.id)
+
+  autenticar_usuario();
+
+  var tokenUsuario = localStorage.getItem("token");
+  let data = {tokenUsuario};
   var id = event.target.id
 
 
   const response = await fetch(`http://127.0.0.1:3000/v1/regiones/${id}`, {
     method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data),
   })
   .then(res => res.text()) // or res.json()
   .then(res => console.log(res))
@@ -460,12 +495,21 @@ var delete_region = async(event) =>{
 }
 
 var delete_pais = async(event) =>{
-  console.log(event.target.id)
+
+  autenticar_usuario();
+
   var id = event.target.id
+
+  var tokenUsuario = localStorage.getItem("token");
+  let data = {tokenUsuario};
 
 
   const response = await fetch(`http://127.0.0.1:3000/v1/paises/${id}`, {
     method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data),
   })
   .then(res => res.text()) // or res.json()
   .then(res => console.log(res))
@@ -476,12 +520,19 @@ var delete_pais = async(event) =>{
 }
 
 var delete_ciudad = async(event) =>{
-  console.log(event.target.id)
-  var id = event.target.id
 
+  autenticar_usuario();
+
+  var id = event.target.id
+  var tokenUsuario = localStorage.getItem("token");
+  let data = {tokenUsuario};
 
   const response = await fetch(`http://127.0.0.1:3000/v1/ciudades/${id}`, {
     method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data),
   })
   .then(res => res.text()) // or res.json()
   .then(res => console.log(res))
@@ -496,9 +547,12 @@ var delete_ciudad = async(event) =>{
 
 var update_region = async () => {
  
+  autenticar_usuario();
+  
+  var tokenUsuario = localStorage.getItem("token")
   let nombre = document.getElementById("region_put_nombre").value;
 
-    let data = {nombre}
+    let data = {nombre, tokenUsuario}
 
     console.log(data);
     let id = id_region_button;
@@ -567,13 +621,16 @@ var obtener_regionID = (event) => {
 
 var update_pais = async () => {
  
+  autenticar_usuario();
+
   let nombre = document.getElementById("pais_put_nombre").value;
+  var tokenUsuario = localStorage.getItem("token");
 
     let id = id_pais_button;
     let region_id = put_regionId;
     console.log(region_id);
     
-    let data = {region_id, nombre};
+    let data = {region_id, nombre, tokenUsuario};
 
     var endpoint = `http://127.0.0.1:3000/v1/paises/${id}`;
   
@@ -665,14 +722,17 @@ var obtener_ciudadID = (event) => {
 }
 
 var update_ciudad = async () => {
- 
+  
+  autenticar_usuario();
+
   let nombre_ciudad = document.getElementById("ciudad_put_nombre").value;
+  var tokenUsuario = localStorage.getItem("token");
 
 
   let id = put_ciudad_id;
   let id_pais = put_pais_id;
   
-  let data = {id_pais, nombre_ciudad};
+  let data = {id_pais, nombre_ciudad, tokenUsuario};
   console.log(id);
   console.log(data);
   

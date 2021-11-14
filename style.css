@@ -1,9 +1,9 @@
 .bg-custom{
-    background: #1D72C2;
+    background: rgb(22, 155, 110);
 }
 
 .btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
-    background-color: #1D72C2 !important;
+    background-color: rgb(22, 155, 110) !important;
 }
 
 
@@ -36,14 +36,10 @@ ul, #myUL {
   }
   
   .caret::before {
-    content: "\25B6";
-    color: black;
+    content: "x";
+    color: rgb(22, 155, 110);
     display: inline-block;
     margin-right: 6px;
-  }
-  
-  .caret-down::before {
-    transform: rotate(90deg);  
   }
   
   .nested {
