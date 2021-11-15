@@ -111,7 +111,6 @@ exports.delete = (req, res) => {
 
 
 //login creacion token
-var usuarioExiste = "";
 var usuarioAdmin = "";
 exports.login = (req, res) =>{
 
@@ -124,10 +123,8 @@ exports.login = (req, res) =>{
         res.status(200).send({token: token, admin: data[0].admin
         })  
         usuarioAdmin = data[0].admin; 
-        usuarioExiste = true;
         console.log(usuarioAdmin)
 
-        console.log(usuarioExiste)
 
       }else{
         res.status(401).send({error: "usuario o clave incorrectos"})
@@ -154,15 +151,21 @@ exports.verificarAdmin = (req, res, next) =>{
   }
 }
 exports.verificarUsuario = (req, res, next) =>{
-  console.log(usuarioExiste)
 
-  if(usuarioExiste == true){
-    console.log("token_local")
 
+  var token = req.body.tokenUsuario;
+  console.log(req.body.email);
+  console.log(req.body);
+  console.log(token);
+
+
+
+  if(token == null){
+    console.log("Usuario no logueado")
+
+  }else{ 
     next();
     return
-  }else{ 
-    res.send("Usuario no logueado")
   }
 }
 
