@@ -59,7 +59,17 @@ var autenticar_usuario = async() =>{
 
   var obtenerContactos = async (i) => {
 
+<<<<<<< HEAD:front/contactos.js
     
+=======
+<<<<<<< HEAD
+    
+=======
+    var tokenUsuario = localStorage.getItem("token")
+    let data = {tokenUsuario};
+
+>>>>>>> b6a26c96b5472aac56aaa116e3a76499e7c18e87
+>>>>>>> 5e158483ba7773bce09a5c4fa143379fb2f53f14:contactos.js
     const response = await fetch('http://127.0.0.1:3000/v1/contactos')
     .then(response => response.json())
     .then(json => {
