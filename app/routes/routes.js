@@ -33,8 +33,13 @@ app.delete("/v1/ciudades/:ciudadId", usuarios.verificarUsuario, ciudad.delete);
 //CRUD Usuarios 
 app.post("/v1/usuarios", usuarios.verificarAdmin, usuarios.create);
 app.get("/v1/usuarios", /*usuarios.verificarAdmin,*/ usuarios.findAll);
+<<<<<<< HEAD
 app.put("/v1/usuarios/:usuarioId", usuarios.verificarAdmin, usuarios.update);
 app.delete("/v1/usuarios/:usuarioId", usuarios.verificarAdmin, usuarios.delete);
+=======
+app.put("/v1/usuarios/:usuarioId", /*usuarios.verificarAdmin,*/ usuarios.update);
+app.delete("/v1/usuarios/:usuarioId", /*usuarios.verificarAdmin,*/ usuarios.delete);
+>>>>>>> b6a26c96b5472aac56aaa116e3a76499e7c18e87
 
 //CRUD compañias 
 app.post("/v1/companies", usuarios.verificarUsuario, compañias.create);
