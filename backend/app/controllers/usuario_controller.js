@@ -111,7 +111,6 @@ exports.delete = (req, res) => {
 
 
 //login creacion token
-var usuarioExiste = "";
 var usuarioAdmin = "";
 exports.login = (req, res) =>{
 
@@ -124,10 +123,8 @@ exports.login = (req, res) =>{
         res.status(200).send({token: token, admin: data[0].admin
         })  
         usuarioAdmin = data[0].admin; 
-        usuarioExiste = true;
         console.log(usuarioAdmin)
 
-        console.log(usuarioExiste)
 
       }else{
         res.status(401).send({error: "usuario o clave incorrectos"})
@@ -144,7 +141,10 @@ exports.login = (req, res) =>{
 
 exports.verificarAdmin = (req, res, next) =>{
 
-  if(usuarioAdmin == 1){
+  var token = req.body.tokenUsuario;
+  let decodificado = jwt.verify(token, jwtClave);
+  
+  if(decodificado.admin == 1){
     console.log("Es Admin")
 
     next();
@@ -154,15 +154,21 @@ exports.verificarAdmin = (req, res, next) =>{
   }
 }
 exports.verificarUsuario = (req, res, next) =>{
-  console.log(usuarioExiste)
 
-  if(usuarioExiste == true){
-    console.log("token_local")
 
+  var token = req.body.tokenUsuario;
+  console.log(req.body.email);
+  console.log(req.body);
+  console.log(token);
+
+
+
+  if(token == null){
+    console.log("Usuario no logueado")
+
+  }else{ 
     next();
     return
-  }else{ 
-    res.send("Usuario no logueado")
   }
 }
 
@@ -194,8 +200,9 @@ exports.verificarId = (req, res, next) =>{
   console.log(token);
   if(token){
     token = token.split(" ")[1];
-    let decodificado = jwt.verify(token, jwtClave);
-console.log(decodificado.id);
+
+
+    console.log(decodificado.id);
     if(!decodificado || decodificado.admin == 0){
       if(decodificado.id != userId){
         retornarUsuarioNoAutorizado(res);
