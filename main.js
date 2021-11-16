@@ -496,10 +496,11 @@ var update_usuario = async () => {
   let repeat_password = document.getElementById("user_paswordx2_edit").value;
 
   var msg = document.getElementById("warning_password2");
+  var tokenUsuario = localStorage.getItem("token")
 
 
   if(password == repeat_password){
-    let data = {nombre, apellido, email, admin, password}
+    let data = {nombre, apellido, email, admin, password, tokenUsuario}
 
     console.log(data);
 
@@ -530,12 +531,12 @@ var update_usuario = async () => {
 }
 
 var reset_usuario_put = () => {
-document.getElementById('user_nombre').value = "";
-document.getElementById('user_apellido').value = "";
-document.getElementById('user_Email').value = "";
-document.getElementById('user_admin').value = "";
-document.getElementById('user_password').value = "";
-document.getElementById('user_paswordx2').value = "";
+document.getElementById('user_nombre_edit').value = "";
+document.getElementById('user_apellido_edit').value = "";
+document.getElementById('user_email_edit').value = "";
+document.getElementById('user_admin_edit').value = "";
+document.getElementById('user_password_edit').value = "";
+document.getElementById('user_paswordx2_edit').value = "";
 }
 
 var clear_usuario_put = document.getElementById('edit_usuario');
